@@ -72,7 +72,8 @@ class detailBookViewController: UIViewController {
 //        favorite.subtitle = detailBookSubTitle.text
 //        favorite.author = detailBookAuthor.text
 //        favorite.image = imageUrl
-        service.deleteBook(favorite)
+        let book = service.getBook(bookTitle)
+        service.deleteBook(book!)
         
     }
 }

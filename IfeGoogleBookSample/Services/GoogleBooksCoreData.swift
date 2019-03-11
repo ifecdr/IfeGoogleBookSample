@@ -29,12 +29,14 @@ class CoreDataService {
     
     // MARK: - Core Data Saving support
     // read operation to return one result of the entity
-    func getBook() -> Favorite? {
+    func getBook(_ name: String) -> Favorite? {
         
         // performing a (NS)FetchRequest from the context
         let fetchRequest = NSFetchRequest<Favorite>(entityName: "Favorite")
         
         // (optional: ) use NSPredicates to better-define our search
+        let predicate = NSPredicate.init(format: "name == %@", name)
+        fetchRequest.predicate = predicate
         do {
             let books = try context.fetch(fetchRequest)
             print("There are \(books.count) many books in Core Data")
