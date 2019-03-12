@@ -36,6 +36,8 @@ class detailBookViewController: UIViewController {
         self.detailBookSubTitle.text = bookSubTitle
         self.detailBookAuthor.text = bookAuthor
         
+        
+        
     }
     
     func CreateFavorite(_ tile: String, _ subtitle: String, _ author: String, imageurl: String ) {
@@ -43,15 +45,13 @@ class detailBookViewController: UIViewController {
         let context = service.context
         
         // create a Book in the context, if there isn't one
-        
         favorite = NSEntityDescription.insertNewObject(forEntityName: "Favorite",
-                                                        into: context) as? Favorite
-    
+                                                       into: context) as? Favorite
+        
         favorite.title = title
-        favorite.subtitle = subtitle
+        favorite.subtitle = title
         favorite.author = author
         favorite.image = imageurl
-        
         // save the Book in the context
         service.saveContext()
 
@@ -68,12 +68,9 @@ class detailBookViewController: UIViewController {
     }
     
     @IBAction func removeFavoriteAction(_ sender: Any) {
-//        favorite.title = detailBookTitle.text
-//        favorite.subtitle = detailBookSubTitle.text
-//        favorite.author = detailBookAuthor.text
-//        favorite.image = imageUrl
         let book = service.getBook(bookTitle)
         service.deleteBook(book!)
+        self.navigationController?.popViewController(animated: true)
         
     }
 }

@@ -26,6 +26,8 @@ class GoogleBooksService {
                 let decoder = JSONDecoder()
                 do {
                     let result = try decoder.decode(BooksSearchModel.Result.self, from: dat)
+                    
+                    //self.downloadBookImages(for: <#T##BooksSearchModel.OneItem#>, completion: completion)
                     //print("\(result)")
                     completion(result)
                 }
@@ -33,6 +35,7 @@ class GoogleBooksService {
                     // error, something
                     print(error)
                 }
+                
             }
         }
         task.resume()
@@ -42,9 +45,10 @@ class GoogleBooksService {
                          completion: @escaping (BooksSearchModel.ImageStruct)->()) {
         
         let dataTaskComp: (Data?, URLResponse?, Error?)->() =
-        { (data, _, _) in
+        { (data, _, error) in
             let image = BooksSearchModel.ImageStruct.init(imageThumbnail: data)
             completion(image)
+            
         }
         
         let imageString = book.imageLink?.thumbnail

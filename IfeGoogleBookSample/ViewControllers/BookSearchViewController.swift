@@ -42,7 +42,7 @@ class BookSearchViewController: UIViewController {
             let vc = segue.destination as! detailBookViewController
             // get the index of the selected row
             let index = tableViewControl.indexPathForSelectedRow?.row
-            if let img = UIImage(data: imageData[index!].imageThumbnail!) {
+            if let img = UIImage(data: imageData[index!].imageThumbnail!) ?? UIImage(named: "plankton"){
                 vc.image = img
             } else {
                 vc.image = UIImage(named: "plankton")
@@ -86,6 +86,7 @@ extension BookSearchViewController: UITableViewDataSource {
         cell.titleLabel.text = book.title
         cell.subtitleLabel.text = book.subTitle ?? "No SubTitle"
         
+        
         if imageData[indexPath.row].imageThumbnail != nil {
             let image = UIImage(data: imageData[indexPath.row].imageThumbnail!)
             cell.imageViewer.image = image
@@ -120,15 +121,19 @@ extension BookSearchViewController: UISearchBarDelegate {
         self.eachResult.removeAll()
         self.imageData.removeAll()
         self.searchResult.removeAll()
+        
         let completion: (BooksSearchModel.Result)-> () = { (result) in
             self.searchResult = result.items as! [BooksSearchModel.Items]
             for i in self.searchResult {
-                self.eachResult.append(i.volumeinfo!)
+                if i.volumeinfo?.imageLink?.thumbnail != nil {
+                    self.eachResult.append(i.volumeinfo!)
+                }
             }
             // download the image from here
             let pictureCompletion: (BooksSearchModel.ImageStruct)-> () = { (img) in
-                self.imageData.append(img)
-                
+                if img.imageThumbnail != nil {
+                    self.imageData.append(img)
+                }
                 print("image downloaded")
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
                     self.tableViewControl.reloadData()
@@ -136,14 +141,9 @@ extension BookSearchViewController: UISearchBarDelegate {
             }
             
             for i in self.searchResult{
+
                 if i.volumeinfo?.imageLink?.thumbnail != nil {
                     self.searching.downloadBookImages(for: i.volumeinfo!, completion: pictureCompletion)
-                } else {
-                    let b = BooksSearchModel.ImageStruct.init()
-                    self.imageData.append(b)
-                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
-                        self.tableViewControl.reloadData()
-                    })
                 }
             }
         }
@@ -159,6 +159,7 @@ extension BookSearchViewController: UISearchBarDelegate {
             self.searchResult.removeAll()
             tableViewControl.reloadData()
         }
+        
         
         
     }

@@ -18,7 +18,8 @@ struct BooksSearchModel {
     struct Result: Decodable {
         var kind: String?
         var totalItems: Int?
-        var items: [Items?] // an array of another struct that contains all the items
+        var items: [Items?]
+        // an array of another struct that contains all the items
         
         enum CodingKeys: String, CodingKey {
             case kind = "kind"
@@ -41,6 +42,7 @@ struct BooksSearchModel {
         var author: [String]?
         var publisher: String?
         var imageLink: ImageLink?
+        //var imageThumbnail: Data?
         
         enum CodingKeys: String, CodingKey {
             case title = "title"
@@ -59,11 +61,11 @@ struct BooksSearchModel {
     }
     
     struct ImageLink: Decodable {
-        var smallThumbnail: String?
+        //var thumbnailData: ImageStruct
         var thumbnail: String?
         
         enum CodingKeys: String, CodingKey{
-            case smallThumbnail = "smallThumbnail"
+            //case smallThumbnail = "smallThumbnail"
             case thumbnail = "thumbnail"
         }
     }
