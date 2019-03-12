@@ -40,7 +40,7 @@ class detailBookViewController: UIViewController {
         
     }
     
-    func CreateFavorite(_ tile: String, _ subtitle: String, _ author: String, imageurl: String ) {
+    func CreateFavorite(_ bktitle: String, _ subtitle: String, _ author: String, imageurl: String ) {
         // get the context
         let context = service.context
         
@@ -48,8 +48,8 @@ class detailBookViewController: UIViewController {
         favorite = NSEntityDescription.insertNewObject(forEntityName: "Favorite",
                                                        into: context) as? Favorite
         
-        favorite.title = title
-        favorite.subtitle = title
+        favorite.title = bktitle
+        favorite.subtitle = subtitle
         favorite.author = author
         favorite.image = imageurl
         // save the Book in the context
@@ -65,11 +65,17 @@ class detailBookViewController: UIViewController {
         let imageurl = imageUrl ?? "No Image"
         
         CreateFavorite(title, subtitle, author, imageurl: imageurl)
+        self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func removeFavoriteAction(_ sender: Any) {
-        let book = service.getBook(bookTitle)
-        service.deleteBook(book!)
+        let book = service.findAll(bookTitle)
+        for i in book {
+            if i.title == bookTitle {
+                service.deleteBook(i)
+            }
+        }
+        
         self.navigationController?.popViewController(animated: true)
         
     }

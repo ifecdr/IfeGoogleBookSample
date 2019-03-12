@@ -17,16 +17,17 @@ class FavoriteViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         favoriteCollection.delegate = self
         favoriteCollection.dataSource = self
         loadFavorites()
     }
     
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        favoriteCollection.reloadData()
     }
     
     func loadFavorites() {

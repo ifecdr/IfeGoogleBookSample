@@ -40,7 +40,8 @@ class CoreDataService {
         do {
             let books = try context.fetch(fetchRequest)
             print("There are \(books.count) many books in Core Data")
-            return books.first
+            return books.last
+            
         }
         catch {
             print("Error in loading from file")
@@ -87,17 +88,17 @@ class CoreDataService {
     }
     
     // performing read operation with a parameter string
-    func findAll(_ name: String) -> [Favorite] {
+    func findAll(_ title: String) -> [Favorite] {
         // performing a (NS)FetchRequest from the context
         let fetchRequest = NSFetchRequest<Favorite>(entityName: "Favorite")
         
         // (optional: ) use NSPredicates to better-define our search
         // NSPredicates & Queries are very similar
-        let predicate = NSPredicate.init(format: "name == %@", name)
+        let predicate = NSPredicate.init(format: "title == %@", title)
         fetchRequest.predicate = predicate
         do {
             let books = try context.fetch(fetchRequest)
-            print("There are \(books.count) many \(name)'s in Core Data")
+            print("There are \(books.count) many \(title)'s in Core Data")
             return books
         }
         catch {
