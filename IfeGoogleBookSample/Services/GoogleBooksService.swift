@@ -12,7 +12,7 @@ import UIKit
 class GoogleBooksService {
     // search for book function https://www.googleapis.com/books/v1/volumes?q={search term}&key={YOUR_API_KEY}
     func searchBooks (_ searchString : String, completion: @escaping(BooksSearchModel.Result)-> ()) {
-        let url = URL(string: "https://www.googleapis.com/books/v1/volumes?q="+searchString+"+inauthor:keyes&key=AIzaSyANfhDF12NS9coGn5oLpSc3KV2P83YfSAo")
+        let url = URL(string: "https://www.googleapis.com/books/v1/volumes?q="+searchString+"+inauthor:keyes&key=")
         
         var request = URLRequest(url: url!,
                                  cachePolicy: .returnCacheDataElseLoad,
@@ -55,9 +55,15 @@ class GoogleBooksService {
         
         if let url = URL(string: imageString!) {
             let dataTask = URLSession.shared.dataTask(with: url, completionHandler: dataTaskComp)
-            
+
             dataTask.resume()
 
+//            do {
+//                let data = try Data(contentsOf: url)
+//                //let responseData = try JSONDecoder().decode(.self, from: data)
+//            } catch {
+//
+//            }
         }
     }
     

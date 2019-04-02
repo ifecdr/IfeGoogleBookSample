@@ -21,12 +21,14 @@ class FavoriteViewController: UIViewController {
         // Do any additional setup after loading the view.
         favoriteCollection.delegate = self
         favoriteCollection.dataSource = self
-        loadFavorites()
+        //loadFavorites()
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        imageData.removeAll()
+        loadFavorites()
         favoriteCollection.reloadData()
     }
     

@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct BooksSearchModel {
+class BooksSearchModel {
     
     
     struct ImageStruct {

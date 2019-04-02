@@ -14,6 +14,7 @@ class BookSearchViewController: UIViewController {
     //
     var authors = [BooksSearchModel.Author]()
     var imageData = [BooksSearchModel.ImageStruct]()
+    var imageDict = [Data]()
     
     
     @IBOutlet weak var searchBarControl: UISearchBar!
@@ -125,31 +126,42 @@ extension BookSearchViewController: UISearchBarDelegate {
         let completion: (BooksSearchModel.Result)-> () = { (result) in
             self.searchResult = result.items as! [BooksSearchModel.Items]
             for i in self.searchResult {
-                if i.volumeinfo?.imageLink?.thumbnail != nil {
-                    self.eachResult.append(i.volumeinfo!)
-                }
-            }
-            // download the image from here
-            let pictureCompletion: (BooksSearchModel.ImageStruct)-> () = { (img) in
-                if img.imageThumbnail != nil {
-                    self.imageData.append(img)
-                }
-                print("image downloaded")
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
-                    self.tableViewControl.reloadData()
-                })
+//                if i.volumeinfo?.imageLink?.thumbnail != nil {
+//                    self.eachResult.append(i.volumeinfo!)
+//
+//                }
+                self.eachResult.append(i.volumeinfo!)
             }
             
+            print(Thread.isMainThread)
+            // download the image from here
+//            let pictureCompletion: (BooksSearchModel.ImageStruct)-> () = { (img) in
+//                if img.imageThumbnail != nil {
+//                    self.imageData.append(img)
+//                    //self.imageDict
+//                }
+//                print("image downloaded")
+//                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
+//                    self.tableViewControl.reloadData()
+//                })
+//            }
+
             for i in self.searchResult{
 
                 if i.volumeinfo?.imageLink?.thumbnail != nil {
-                    self.searching.downloadBookImages(for: i.volumeinfo!, completion: pictureCompletion)
+                    let url = URL(string: (i.volumeinfo?.imageLink?.thumbnail!)!)
+                    guard let data = try? Data(contentsOf: url!) else {
+                        return
+                    }
+                    self.imageData.append()
+                    //self.searching.downloadBookImages(for: i.volumeinfo!, completion: pictureCompletion)
                 }
             }
         }
         guard let searchString = searchBarControl.text else {
             return
         }
+        //searchString
         let v =  searchString.replacingOccurrences(of: " ", with: "+")
         if v != "" {
             searching.searchBooks(v, completion: completion)
